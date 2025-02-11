@@ -107,6 +107,17 @@ const VerificationScreen = () => {
           </View>
         </View>
       </ScrollView>
+
+      {/* Next Button - Outside ScrollView to stay fixed */}
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity 
+          style={[styles.nextButton, code.length !== 4 && styles.nextButtonDisabled]}
+          disabled={code.length !== 4}
+          onPress={() => {/* Handle verification */}}
+        >
+          <Ionicons name="arrow-forward" size={24} color="#fff" />
+        </TouchableOpacity>
+      </View>
     </KeyboardAvoidingView>
   )
 }
@@ -203,6 +214,32 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#666',
     marginTop: 4,
+  },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingBottom: Platform.OS === 'ios' ? 20 : 20,
+    paddingHorizontal: 24,
+    backgroundColor: '#fff',
+    alignItems: 'flex-end',
+  },
+  nextButton: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: '#88D2D9',
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+  },
+  nextButtonDisabled: {
+    backgroundColor: '#E0E0E0',
   },
 })
 
