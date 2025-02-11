@@ -29,8 +29,10 @@ const VerificationScreen = () => {
 
   useEffect(() => {
     if (code.length === 4) {
-      // Handle verification
+      // For development, any 4-digit code will work
       console.log('Code complete:', code)
+      // Navigate to home screen
+      router.replace('/(tabs)/home')
     }
   }, [code])
 
@@ -113,7 +115,7 @@ const VerificationScreen = () => {
         <TouchableOpacity 
           style={[styles.nextButton, code.length !== 4 && styles.nextButtonDisabled]}
           disabled={code.length !== 4}
-          onPress={() => {/* Handle verification */}}
+          onPress={() => router.replace('/(tabs)/home')}
         >
           <Ionicons name="arrow-forward" size={24} color="#fff" />
         </TouchableOpacity>

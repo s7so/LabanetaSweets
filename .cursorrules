@@ -106,47 +106,125 @@ If needed, you can further use the `web_scraper.py` file to scrape the web page 
 
 # Scratchpad
 
-## Current Task: Create Verification Code Screen
+## Current Task: Create Category Screen (Rice Milk)
 
-Task Description: Create a verification code screen that matches the provided design image, which shows:
-- Back button in the header
-- "Enter your 4-digit code" title
-- 4-digit code input with dashes
-- "Resend Code" button
-- Custom numeric keypad
-- Clean, minimal design with light background
+Task Description: Create a category details screen based on the provided design image, which shows:
+- Header with back button and category name
+- List of products in the category
+- Add to cart functionality
+- Bottom order summary bar
 
 Progress:
-[X] Previous phone number screen implementation completed
-
-Next Steps:
-[ ] Create new verification screen component
+[ ] Create category screen layout
 [ ] Add header with back button
-[ ] Implement the title and code input field
-[ ] Create custom numeric keypad component
-  - Numbers 0-9 with letters
-  - Special characters button
-  - Backspace button
-[ ] Add "Resend Code" button
-[ ] Implement code input validation
-[ ] Set up navigation flow
+[ ] Implement product list
+  [ ] Product image
+  [ ] Product name and description
+  [ ] Price in AED
+  [ ] Add to cart button
+[ ] Create bottom order summary bar
 
 Design Details:
-- Title: "Enter your 4-digit code"
-- Subtitle: "Code"
-- Input field: 4 dashes that get filled with numbers
-- Keypad layout:
-  - 1-9 arranged in 3x3 grid
-  - Letters under numbers (ABC, DEF, etc.)
-  - Bottom row: Special chars, 0, Backspace
-- Resend button:
-  - Text: "Resend Code"
-  - Light blue color (#88D2D9)
-  - Positioned above keypad
+- Header:
+  - Back button (<)
+  - "Rice Milk" title
+  - Clean, minimal design
+- Product List:
+  - Product image on left
+  - Product details on right:
+    - Name (e.g. "Rice Milk Sakalans")
+    - Description (e.g. "Rice Milk with fruits")
+    - Price (e.g. "AED 16")
+  - Add button (+) on far right
+- Colors:
+  - Primary: #88D2D9 (Light blue for add buttons)
+  - Background: White
+  - Text: Dark for titles, Grey for descriptions
+- Products Data:
+  - Rice Milk Sakalans (AED 16)
+  - Rice Milk Pistachio (AED 15)
+  - Rice Milk Mango (AED 15)
+  - Rice Milk Nutella (AED 13)
+  - Rice Milk Caesar (AED 17)
+
+Implementation Plan:
+1. Create new screen at app/(tabs)/category.tsx
+2. Implement header with navigation
+3. Create product list component
+4. Add bottom order summary
+5. Implement add to cart functionality
+
+## Current Task: Create Home Screen
+
+Task Description: Create a home screen that matches the provided design image, which shows:
+- Header with logo and location
+- Search bar
+- Categories carousel with icons
+- "End of year Discount" banner
+- "Best Selling" section with product cards
+- "Offers" section with product cards
+- "New Arrival" banner
+- Bottom tab navigation
+
+Progress:
+[X] Previous verification screen implementation completed
+[X] Create new home screen layout
+[X] Add header with logo and location
+[X] Implement search bar
+[X] Create categories carousel
+  [X] Category icons
+  [X] Labels below icons
+[X] Add promotional banner
+[X] Create product card component
+[X] Implement "Best Selling" section
+[X] Implement "Offers" section
+[X] Add "New Arrival" banner
+[X] Set up bottom tab navigation
+
+Recent Updates:
+- Added SafeAreaView for proper content display
+- Adjusted logo size and positioning
+- Modified location button alignment
+- Reduced spacing between logo and location
+- Removed unnecessary padding and margins
+
+Current Focus:
+- Fine-tuning the UI layout and spacing
+- Ensuring proper alignment of all elements
+- Optimizing the visual appearance
+
+Next Steps:
+- Test the layout on different screen sizes
+- Implement actual data fetching from API
+- Add loading states for dynamic content
+- Implement category filtering functionality
+- Add proper error handling
+
+Design Details:
+- Header:
+  - Logo image from @logo.png
+  - Location selector with UAE flag
+  - Search bar with grey background
+- Categories:
+  - Horizontal scrollable list
+  - Icons: Cheesecake, Rice Milk, Fresh Juice, etc.
+- Product Cards:
+  - Product image
+  - Name and description
+  - Price in AED
+  - Add to cart button
+- Colors:
+  - Primary: #88D2D9 (Light blue)
+  - Background: White
+  - Text: Dark for titles, Grey for descriptions
+- Bottom Navigation:
+  - Home, Cart, Orders, Account tabs
+  - Icons with labels
 
 Implementation Notes:
-- Will create screen at app/(auth)/verification.tsx
-- Need to handle 4-digit code input
-- Should mask input with dots or numbers based on design
-- Back button should return to phone number screen
-- Should auto-navigate when 4 digits are entered
+- Screen located at app/(tabs)/home.tsx
+- Using horizontal ScrollView for categories
+- Product cards implemented as reusable components
+- Bottom navigation configured in (tabs)/_layout.tsx
+- SafeAreaView added for proper content display
+- Logo size and spacing adjusted for better visual appeal
