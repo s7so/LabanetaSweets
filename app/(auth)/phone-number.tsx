@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions, TextInput } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions, TextInput, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'
 import React, { useState } from 'react'
 import { useRouter } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
@@ -10,50 +10,65 @@ const PhoneNumberScreen = () => {
   const [phoneNumber, setPhoneNumber] = useState('')
 
   return (
-    <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
+    <KeyboardAvoidingView 
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView 
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        bounces={false}
+        keyboardShouldPersistTaps="handled"
+      >
+        {/* Header */}
+        <View style={styles.header}>
+          <TouchableOpacity 
+            onPress={() => router.back()}
+            style={styles.backButton}
+          >
+            <Ionicons name="chevron-back" size={24} color="#333" />
+          </TouchableOpacity>
+        </View>
+
+        {/* Title and Input */}
+        <View style={styles.inputContainer}>
+          <Text style={styles.title}>Enter your mobile number</Text>
+          <Text style={styles.subtitle}>Mobile Number</Text>
+          <View style={styles.phoneInput}>
+            <View style={styles.countryCode}>
+              <Image 
+                source={require('../../assets/images/uae-flag.png')}
+                style={styles.flag}
+                resizeMode="contain"
+              />
+              <Text style={styles.countryCodeText}>+971</Text>
+            </View>
+            <TextInput
+              style={styles.phoneNumberInput}
+              value={phoneNumber}
+              onChangeText={setPhoneNumber}
+              placeholder="Enter your phone number"
+              keyboardType="phone-pad"
+              autoFocus
+            />
+          </View>
+        </View>
+
+        {/* Spacer to ensure content is above the button */}
+        <View style={styles.spacer} />
+      </ScrollView>
+
+      {/* Next Button - Outside ScrollView to stay fixed */}
+      <View style={styles.buttonContainer}>
         <TouchableOpacity 
-          onPress={() => router.back()}
-          style={styles.backButton}
+          style={[styles.nextButton, !phoneNumber && styles.nextButtonDisabled]}
+          disabled={!phoneNumber}
+          onPress={() => router.push('/(auth)/verification')}
         >
-          <Ionicons name="chevron-back" size={24} color="#333" />
+          <Ionicons name="arrow-forward" size={24} color="#fff" />
         </TouchableOpacity>
       </View>
-
-      {/* Title and Input */}
-      <View style={styles.inputContainer}>
-        <Text style={styles.title}>Enter your mobile number</Text>
-        <Text style={styles.subtitle}>Mobile Number</Text>
-        <View style={styles.phoneInput}>
-          <View style={styles.countryCode}>
-            <Image 
-              source={require('../../assets/images/uae-flag.png')}
-              style={styles.flag}
-              resizeMode="contain"
-            />
-            <Text style={styles.countryCodeText}>+971</Text>
-          </View>
-          <TextInput
-            style={styles.phoneNumberInput}
-            value={phoneNumber}
-            onChangeText={setPhoneNumber}
-            placeholder="Enter your phone number"
-            keyboardType="phone-pad"
-            autoFocus
-          />
-        </View>
-      </View>
-
-      {/* Next Button */}
-      <TouchableOpacity 
-        style={[styles.nextButton, !phoneNumber && styles.nextButtonDisabled]}
-        disabled={!phoneNumber}
-        onPress={() => {/* Handle next */}}
-      >
-        <Ionicons name="arrow-forward" size={24} color="#fff" />
-      </TouchableOpacity>
-    </View>
+    </KeyboardAvoidingView>
   )
 }
 
@@ -62,8 +77,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+  },
   header: {
-    paddingTop: 60,
+    paddingTop: Platform.OS === 'ios' ? 50 : 20,
     paddingHorizontal: 20,
     paddingBottom: 20,
   },
@@ -114,10 +135,21 @@ const styles = StyleSheet.create({
     color: '#333',
     padding: 0,
   },
-  nextButton: {
+  spacer: {
+    flex: 1,
+    minHeight: 100, // Ensure minimum space for the button
+  },
+  buttonContainer: {
     position: 'absolute',
-    bottom: 40,
-    right: 24,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingBottom: Platform.OS === 'ios' ? 40 : 20,
+    paddingHorizontal: 24,
+    backgroundColor: '#fff',
+    alignItems: 'flex-end',
+  },
+  nextButton: {
     width: 56,
     height: 56,
     borderRadius: 28,

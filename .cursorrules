@@ -106,48 +106,47 @@ If needed, you can further use the `web_scraper.py` file to scrape the web page 
 
 # Scratchpad
 
-## Current Task: Create Phone Number Input Screen
+## Current Task: Create Verification Code Screen
 
-Task Description: Create a phone number input screen that matches the provided design image, which shows:
+Task Description: Create a verification code screen that matches the provided design image, which shows:
 - Back button in the header
-- "Enter your mobile number" title
-- UAE country code selector (+971)
-- Custom numeric keypad with letters
-- Circular next button with arrow
+- "Enter your 4-digit code" title
+- 4-digit code input with dashes
+- "Resend Code" button
+- Custom numeric keypad
 - Clean, minimal design with light background
 
 Progress:
-[X] Previous sign-in screen implementation completed
+[X] Previous phone number screen implementation completed
 
 Next Steps:
-[ ] Create new phone number input screen component
+[ ] Create new verification screen component
 [ ] Add header with back button
-[ ] Implement the title and input field
-[ ] Add UAE flag with country code
+[ ] Implement the title and code input field
 [ ] Create custom numeric keypad component
   - Numbers 0-9 with letters
   - Special characters button
   - Backspace button
-[ ] Add floating next button
-[ ] Implement input validation and formatting
+[ ] Add "Resend Code" button
+[ ] Implement code input validation
 [ ] Set up navigation flow
 
 Design Details:
-- Title: "Enter your mobile number"
-- Subtitle: "Mobile Number"
-- Country code: "+971" with UAE flag
+- Title: "Enter your 4-digit code"
+- Subtitle: "Code"
+- Input field: 4 dashes that get filled with numbers
 - Keypad layout:
   - 1-9 arranged in 3x3 grid
   - Letters under numbers (ABC, DEF, etc.)
   - Bottom row: Special chars, 0, Backspace
-- Next button:
-  - Light blue circular button (#88D2D9)
-  - White arrow icon
-  - Fixed position at bottom right
+- Resend button:
+  - Text: "Resend Code"
+  - Light blue color (#88D2D9)
+  - Positioned above keypad
 
 Implementation Notes:
-- Will create screen at app/(auth)/phone-number.tsx
-- Need to handle keyboard input and display
-- Should validate phone number format
-- Back button should return to sign-in screen
-- Next button should only be enabled with valid input
+- Will create screen at app/(auth)/verification.tsx
+- Need to handle 4-digit code input
+- Should mask input with dots or numbers based on design
+- Back button should return to phone number screen
+- Should auto-navigate when 4 digits are entered
