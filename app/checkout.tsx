@@ -83,21 +83,20 @@ const CheckoutScreen = () => {
       // Clear cart after successful payment
       await clearCart()
       
-      // Show success message
-      Alert.alert(
-        'Success',
-        'Your order has been placed successfully!',
-        [
-          {
-            text: 'OK',
-            onPress: () => router.push('/(tabs)/orders')
-          }
-        ]
-      )
+      // Navigate to order confirmation screen
+      router.push('/order-confirmation')
     } catch (error) {
       Alert.alert('Error', 'Failed to process payment. Please try again.')
     } finally {
       setIsProcessing(false)
+    }
+  }
+
+  const handlePaymentMethodPress = (methodId: string) => {
+    if (methodId === 'new_card') {
+      router.push('/add-card')
+    } else {
+      setSelectedPayment(methodId)
     }
   }
 
@@ -190,7 +189,7 @@ const CheckoutScreen = () => {
             <TouchableOpacity
               key={method.id}
               style={styles.paymentOption}
-              onPress={() => setSelectedPayment(method.id)}
+              onPress={() => handlePaymentMethodPress(method.id)}
             >
               <View style={styles.paymentInfo}>
                 <Ionicons name={method.icon as any} size={24} color="#333" />
