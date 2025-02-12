@@ -1,9 +1,25 @@
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ActivityIndicator, Platform, Dimensions } from 'react-native'
 import React, { useState } from 'react'
 import { useRouter, useLocalSearchParams } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useCart } from '@/context/CartContext'
+
+const { width: screenWidth } = Dimensions.get('window')
+const isSmallDevice = screenWidth < 375 // iPhone SE, iPhone 7 and smaller
+const isLargeDevice = screenWidth >= 768 // Tablets and larger phones
+
+const getResponsiveFontSize = (size: number) => {
+  if (isSmallDevice) return size - 2
+  if (isLargeDevice) return size + 4
+  return size
+}
+
+const getResponsiveSize = (size: number) => {
+  if (isSmallDevice) return size * 0.9
+  if (isLargeDevice) return size * 1.2
+  return size
+}
 
 const ProductDetailsScreen = () => {
   const router = useRouter()
@@ -149,8 +165,14 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
+    paddingHorizontal: Platform.select({
+      ios: isSmallDevice ? 16 : 20,
+      android: 20,
+    }),
+    paddingVertical: Platform.select({
+      ios: isSmallDevice ? 12 : 16,
+      android: 16,
+    }),
     borderBottomWidth: 1,
     borderBottomColor: '#F5F5F5',
   },
@@ -161,34 +183,61 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerTitle: {
-    fontSize: 18,
+    fontSize: Platform.select({
+      ios: isSmallDevice ? 16 : 18,
+      android: 18,
+    }),
     fontWeight: '600',
     color: '#333',
-    marginLeft: 8,
+    marginLeft: Platform.select({
+      ios: isSmallDevice ? 6 : 8,
+      android: 8,
+    }),
   },
   imageContainer: {
     width: '100%',
-    height: 300,
+    height: Platform.select({
+      ios: isSmallDevice ? 200 : 300,
+      android: 300,
+    }),
     backgroundColor: '#F5F5F5',
     justifyContent: 'center',
     alignItems: 'center',
   },
   productInfo: {
-    padding: 20,
+    padding: Platform.select({
+      ios: isSmallDevice ? 16 : 20,
+      android: 20,
+    }),
   },
   productName: {
-    fontSize: 24,
+    fontSize: Platform.select({
+      ios: isSmallDevice ? 20 : 24,
+      android: 24,
+    }),
     fontWeight: '600',
     color: '#333',
-    marginBottom: 8,
+    marginBottom: Platform.select({
+      ios: isSmallDevice ? 6 : 8,
+      android: 8,
+    }),
   },
   productDescription: {
-    fontSize: 16,
+    fontSize: Platform.select({
+      ios: isSmallDevice ? 14 : 16,
+      android: 16,
+    }),
     color: '#666',
-    marginBottom: 16,
+    marginBottom: Platform.select({
+      ios: isSmallDevice ? 12 : 16,
+      android: 16,
+    }),
   },
   productPrice: {
-    fontSize: 24,
+    fontSize: Platform.select({
+      ios: isSmallDevice ? 20 : 24,
+      android: 24,
+    }),
     fontWeight: '600',
     color: '#333',
   },
@@ -196,21 +245,39 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 20,
+    paddingVertical: Platform.select({
+      ios: isSmallDevice ? 1 : 20,
+      android: 20,
+    }),
   },
   quantityButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: Platform.select({
+      ios: isSmallDevice ? 36 : 40,
+      android: 40,
+    }),
+    height: Platform.select({
+      ios: isSmallDevice ? 36 : 40,
+      android: 40,
+    }),
+    borderRadius: Platform.select({
+      ios: isSmallDevice ? 18 : 20,
+      android: 20,
+    }),
     backgroundColor: '#F5F5F5',
     justifyContent: 'center',
     alignItems: 'center',
   },
   quantityText: {
-    fontSize: 18,
+    fontSize: Platform.select({
+      ios: isSmallDevice ? 16 : 18,
+      android: 18,
+    }),
     fontWeight: '600',
     color: '#333',
-    marginHorizontal: 20,
+    marginHorizontal: Platform.select({
+      ios: isSmallDevice ? 16 : 20,
+      android: 20,
+    }),
   },
   addToBasketButton: {
     position: 'absolute',
@@ -221,15 +288,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 20,
+    padding: Platform.select({
+      ios: isSmallDevice ? 16 : 20,
+      android: 20,
+    }),
   },
   addToBasketText: {
-    fontSize: 18,
+    fontSize: Platform.select({
+      ios: isSmallDevice ? 16 : 18,
+      android: 18,
+    }),
     fontWeight: '600',
     color: '#fff',
   },
   addToBasketPrice: {
-    fontSize: 18,
+    fontSize: Platform.select({
+      ios: isSmallDevice ? 16 : 18,
+      android: 18,
+    }),
     fontWeight: '600',
     color: '#fff',
   },

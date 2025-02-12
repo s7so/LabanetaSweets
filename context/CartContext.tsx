@@ -1,13 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-// ده عبارة عن interface بيوصف شكل العنصر اللي هيتحط في السلة
-interface CartItem {
-  id: string // كود العنصر
-  name: string // اسم العنصر
-  price: number // سعر العنصر
-  quantity: number // الكمية من العنصر ده
-  category: string // القسم اللي بينتمي ليه العنصر
+export interface CartItem {
+  id: string
+  name: string
+  price: number
+  quantity: number
+  category: string
 }
 
 // وده interface تاني بيوصف الحاجات اللي ال CartContext بيقدمها

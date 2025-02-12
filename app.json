@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "LabanetaSweet",
+    "name": "Labaneta Sweet",
     "slug": "LabanetaSweet",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -8,14 +8,32 @@
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/images/splash Screen.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.labaneta.sweet",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "We need your location to show nearby stores and for delivery.",
+        "NSLocationAlwaysUsageDescription": "We need your location to show nearby stores and for delivery."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.labaneta.sweet",
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -25,12 +43,16 @@
     "plugins": [
       "expo-router",
       [
-        "expo-splash-screen",
+        "expo-location",
         {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "locationAlwaysAndWhenInUsePermission": "Allow Labaneta Sweet to use your location to show nearby stores and for delivery."
+        }
+      ],
+      [
+        "@rnmapbox/maps",
+        {
+          "RNMapboxMapsImpl": "mapbox",
+          "RNMapboxMapsDownloadToken": "FREE"
         }
       ]
     ],
