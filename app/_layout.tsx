@@ -8,6 +8,7 @@ import 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { CartProvider } from '@/context/CartContext'
 import { AddressProvider } from '@/context/AddressContext'
+import { UserProvider } from '@/context/UserContext'
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 
@@ -31,18 +32,23 @@ export default function RootLayout() {
   }
 
   return (
-    <CartProvider>
-      <AddressProvider>
-        <SafeAreaProvider>
-          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-            <Stack>
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen name="+not-found" />
-            </Stack>
-            <StatusBar style="auto" />
-          </ThemeProvider>
-        </SafeAreaProvider>
-      </AddressProvider>
-    </CartProvider>
+    <UserProvider>
+      <CartProvider>
+        <AddressProvider>
+          <SafeAreaProvider>
+            <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+              <Stack>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen name="+not-found" />
+                <Stack.Screen name="payment" options={{ headerShown: false }} />
+                <Stack.Screen name="edit-card" options={{ headerShown: false }} />
+                <Stack.Screen name="edit-profile" options={{ headerShown: false }} />
+              </Stack>
+              <StatusBar style="auto" />
+            </ThemeProvider>
+          </SafeAreaProvider>
+        </AddressProvider>
+      </CartProvider>
+    </UserProvider>
   );
 }

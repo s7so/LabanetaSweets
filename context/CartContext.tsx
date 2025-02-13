@@ -9,21 +9,34 @@ export interface CartItem {
   category: string
 }
 
+interface Voucher {
+  code: string
+  discount: {
+    type: 'percentage' | 'fixed'
+    value: number
+  }
+  minOrder?: number
+}
+
 // وده interface تاني بيوصف الحاجات اللي ال CartContext بيقدمها
 interface CartContextType {
   items: CartItem[] // مصفوفة فيها كل العناصر اللي في السلة
+  voucher: Voucher | null // Add voucher to context
   addToCart: (item: CartItem) => Promise<void> // ফাংশൻ بتضيف عنصر للسلة
   removeFromCart: (itemId: string) => Promise<void> // ফাংশൻ بتمسح عنصر من السلة
   updateQuantity: (itemId: string, quantity: number) => Promise<void> // ফাংশൻ بتعدل كمية عنصر في السلة
   getTotalPrice: () => number // ফাংশൻ بتحسب السعر الإجمالي لكل اللي في السلة
   getTotalItems: () => number // ফাংশൻ بتحسب عدد العناصر اللي في السلة
   clearCart: () => Promise<void>
+  applyVoucher: (voucher: Voucher) => Promise<void> // Add method to apply voucher
+  removeVoucher: () => Promise<void> // Add method to remove voucher
   isLoading: boolean
   error: string | null
 }
 
 // CartContext ده هو الـ context نفسه اللي هنستخدمه في التطبيق
 const CART_STORAGE_KEY = '@LabanetaSweets:cart'
+const VOUCHER_STORAGE_KEY = '@LabanetaSweets:voucher'
 const MAX_QUANTITY_PER_ITEM = 99
 const MIN_ORDER_AMOUNT = 50
 
@@ -33,6 +46,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined)
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   // دى স্টেট فيها كل العناصر اللى فى السلة
   const [items, setItems] = useState<CartItem[]>([])
+  const [voucher, setVoucher] = useState<Voucher | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -43,9 +57,16 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
   const loadCartData = async () => {
     try {
-      const savedCart = await AsyncStorage.getItem(CART_STORAGE_KEY)
+      const [savedCart, savedVoucher] = await Promise.all([
+        AsyncStorage.getItem(CART_STORAGE_KEY),
+        AsyncStorage.getItem(VOUCHER_STORAGE_KEY)
+      ])
+      
       if (savedCart) {
         setItems(JSON.parse(savedCart))
+      }
+      if (savedVoucher) {
+        setVoucher(JSON.parse(savedVoucher))
       }
     } catch (err) {
       setError('Failed to load cart data')
@@ -62,6 +83,20 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (err) {
       setError('Failed to save cart data')
       console.error('Error saving cart:', err)
+    }
+  }
+
+  // Save voucher data to AsyncStorage
+  const saveVoucherData = async (voucherData: Voucher | null) => {
+    try {
+      if (voucherData) {
+        await AsyncStorage.setItem(VOUCHER_STORAGE_KEY, JSON.stringify(voucherData))
+      } else {
+        await AsyncStorage.removeItem(VOUCHER_STORAGE_KEY)
+      }
+    } catch (err) {
+      setError('Failed to save voucher data')
+      console.error('Error saving voucher:', err)
     }
   }
 
@@ -151,9 +186,49 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }
 
+  const applyVoucher = async (newVoucher: Voucher) => {
+    try {
+      setError(null)
+      const subtotal = getTotalPrice()
+      
+      // Check minimum order amount if specified
+      if (newVoucher.minOrder && subtotal < newVoucher.minOrder) {
+        setError(`Minimum order amount of AED${newVoucher.minOrder} required`)
+        return
+      }
+
+      setVoucher(newVoucher)
+      await saveVoucherData(newVoucher)
+    } catch (err) {
+      setError('Failed to apply voucher')
+      console.error('Error applying voucher:', err)
+    }
+  }
+
+  const removeVoucher = async () => {
+    try {
+      setError(null)
+      setVoucher(null)
+      await saveVoucherData(null)
+    } catch (err) {
+      setError('Failed to remove voucher')
+      console.error('Error removing voucher:', err)
+    }
+  }
+
   // ফাংশൻ بتحسب السعر الإجمالي لكل اللي في السلة
   const getTotalPrice = () => {
-    return Number(items.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2))
+    const subtotal = Number(items.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2))
+    
+    if (!voucher) return subtotal
+
+    // Apply discount
+    if (voucher.discount.type === 'percentage') {
+      const discount = subtotal * (voucher.discount.value / 100)
+      return Number((subtotal - discount).toFixed(2))
+    } else {
+      return Number((subtotal - voucher.discount.value).toFixed(2))
+    }
   }
 
   // ফাংশൻ بتحسب عدد العناصر اللي في السلة
@@ -168,12 +243,15 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <CartContext.Provider value={{
       items, // العناصر اللي في السلة
+      voucher,
       addToCart, // ফাংশൻ إضافة عنصر
       removeFromCart, // ফাংশൻ مسح عنصر
       updateQuantity, // ফাংশൻ تعديل الكمية
       getTotalPrice, // ফাংশൻ حساب السعر الإجمالي
       getTotalItems, // ফাংশൻ حساب عدد العناصر
       clearCart,
+      applyVoucher,
+      removeVoucher,
       isLoading,
       error,
     }}>

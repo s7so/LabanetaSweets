@@ -221,3 +221,51 @@ Implementation Notes:
 - Bottom navigation configured in (tabs)/_layout.tsx
 - SafeAreaView added for proper content display
 - Logo size and spacing adjusted for better visual appeal
+
+## Current Task: Create Vouchers Screen
+
+Task Description: Create a screen that displays user's vouchers and allows them to:
+- View available vouchers
+- View used vouchers
+- View expired vouchers
+- Apply voucher code
+
+Progress:
+[ ] Create vouchers screen layout
+  [ ] Create tab navigation for voucher categories
+  [ ] Add voucher card component
+  [ ] Add empty state for no vouchers
+[ ] Implement voucher code input section
+[ ] Add voucher status indicators
+[ ] Implement voucher application logic
+
+Design Details:
+- Header:
+  - Back button (<)
+  - "Vouchers" title
+  - Clean, minimal design
+- Tabs:
+  - Available
+  - Used
+  - Expired
+- Voucher Card:
+  - Discount amount/percentage
+  - Validity period
+  - Terms and conditions
+  - Status indicator
+- Colors:
+  - Primary: #88D2D9 (Light blue)
+  - Background: White
+  - Text: Dark for titles, Grey for descriptions
+  - Status colors:
+    - Available: #4CAF50 (Green)
+    - Used: #9E9E9E (Grey)
+    - Expired: #FF6B6B (Red)
+
+Implementation Plan:
+1. Create new screen at app/vouchers.tsx
+2. Implement header with navigation
+3. Create voucher card component
+4. Add tab navigation
+5. Implement voucher code input
+6. Add voucher application logic

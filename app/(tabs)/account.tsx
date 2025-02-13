@@ -1,12 +1,14 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native'
 import React from 'react'
 import { useRouter } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useUser } from '@/context/UserContext'
 
 const AccountScreen = () => {
   const router = useRouter()
   const insets = useSafeAreaInsets()
+  const { user } = useUser()
 
   const menuItems = [
     {
@@ -19,7 +21,7 @@ const AccountScreen = () => {
       id: 'vouchers',
       title: 'Vouchers',
       icon: 'ticket-outline',
-      onPress: () => console.log('Vouchers'),
+      onPress: () => router.push('/vouchers'),
     },
     {
       id: 'addresses',
@@ -31,7 +33,7 @@ const AccountScreen = () => {
       id: 'payment',
       title: 'Payment',
       icon: 'card-outline',
-      onPress: () => console.log('Payment'),
+      onPress: () => router.push('/payment'),
     },
   ]
 
@@ -43,10 +45,25 @@ const AccountScreen = () => {
       <Text style={styles.title}>Account</Text>
 
       {/* User Info */}
-      <TouchableOpacity style={styles.userInfo}>
-        <View>
-          <Text style={styles.userName}>Customer Name</Text>
-          <Text style={styles.userPhone}>+971 561 254 898</Text>
+      <TouchableOpacity 
+        style={styles.userInfo}
+        onPress={() => router.push('/edit-profile')}
+      >
+        <View style={styles.userLeft}>
+          {user?.profileImage ? (
+            <Image
+              source={{ uri: user.profileImage }}
+              style={styles.profileImage}
+            />
+          ) : (
+            <View style={styles.avatarPlaceholder}>
+              <Ionicons name="person" size={24} color="#fff" />
+            </View>
+          )}
+          <View style={styles.userDetails}>
+            <Text style={styles.userName}>{user?.name || 'Customer Name'}</Text>
+            <Text style={styles.userPhone}>{user?.phone || '+971 561 254 898'}</Text>
+          </View>
         </View>
         <Ionicons name="chevron-forward" size={24} color="#666" />
       </TouchableOpacity>
@@ -74,7 +91,7 @@ const AccountScreen = () => {
             onPress={item.onPress}
           >
             <View style={styles.menuItemLeft}>
-              <Ionicons name={item.icon} size={24} color="#333" />
+              <Ionicons name={item.icon} size={24} color="#88D2D9" />
               <Text style={styles.menuItemText}>{item.title}</Text>
             </View>
             <Ionicons name="chevron-forward" size={20} color="#666" />
@@ -101,17 +118,34 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    backgroundColor: '#fff',
+    padding: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
   },
+  userLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  profileImage: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+  },
+  avatarPlaceholder: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: '#88D2D9',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  userDetails: {
+    marginLeft: 12,
+  },
   userName: {
-    fontSize: 16,
-    fontWeight: '500',
+    fontSize: 18,
+    fontWeight: '600',
     color: '#333',
-    marginBottom: 4,
   },
   userPhone: {
     fontSize: 14,
