@@ -106,53 +106,46 @@ If needed, you can further use the `web_scraper.py` file to scrape the web page 
 
 # Scratchpad
 
-## Current Task: Create Category Screen (Rice Milk)
+## Current Task: Create Refer a Friend Screen
 
-Task Description: Create a category details screen based on the provided design image, which shows:
-- Header with back button and category name
-- List of products in the category
-- Add to cart functionality
-- Bottom order summary bar
+Task Description: Create a screen that allows users to share their referral code with friends, which shows:
+- Header with back button and title
+- Referral code display
+- Share options
+- Referral benefits explanation
 
 Progress:
-[ ] Create category screen layout
+[ ] Create refer-a-friend screen layout
 [ ] Add header with back button
-[ ] Implement product list
-  [ ] Product image
-  [ ] Product name and description
-  [ ] Price in AED
-  [ ] Add to cart button
-[ ] Create bottom order summary bar
+[ ] Create referral code section
+  [ ] Display code
+  [ ] Copy button
+[ ] Add share options
+[ ] Add referral benefits section
 
 Design Details:
 - Header:
   - Back button (<)
-  - "Rice Milk" title
+  - "Refer a friend" title
   - Clean, minimal design
-- Product List:
-  - Product image on left
-  - Product details on right:
-    - Name (e.g. "Rice Milk Sakalans")
-    - Description (e.g. "Rice Milk with fruits")
-    - Price (e.g. "AED 16")
-  - Add button (+) on far right
+- Referral Code Section:
+  - Large display of code
+  - Copy button
+  - Share button
+- Benefits Section:
+  - Icon
+  - Description of benefits
 - Colors:
-  - Primary: #88D2D9 (Light blue for add buttons)
+  - Primary: #88D2D9 (Light blue)
   - Background: White
   - Text: Dark for titles, Grey for descriptions
-- Products Data:
-  - Rice Milk Sakalans (AED 16)
-  - Rice Milk Pistachio (AED 15)
-  - Rice Milk Mango (AED 15)
-  - Rice Milk Nutella (AED 13)
-  - Rice Milk Caesar (AED 17)
 
 Implementation Plan:
-1. Create new screen at app/(tabs)/category.tsx
+1. Create new screen at app/refer-a-friend.tsx
 2. Implement header with navigation
-3. Create product list component
-4. Add bottom order summary
-5. Implement add to cart functionality
+3. Create referral code display component
+4. Add share functionality
+5. Add benefits section
 
 ## Current Task: Create Home Screen
 
