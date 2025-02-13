@@ -46,6 +46,20 @@ def create_product():
         image_url = data["image_url"]
         category_id = data["category_id"]
 
+        # تحويل category_id لـ integer بشكل صريح (Explicitly cast to integer)
+        category_id = int(category_id)  # هنا بنعمل التحويل
+
+        # التحقق من أن category_id موجود في جدول categories
+        cur.execute("SELECT id FROM categories WHERE id = %s;", (category_id,))
+        category = cur.fetchone()
+        if not category:  # لو التصنيف مش موجود (يعني الـ query مرجعش صف)
+            cur.close()
+            conn.close()
+            return (
+                jsonify({"message": "Invalid category_id. Category does not exist."}),
+                400,
+            )  # رد خطأ "Bad Request"
+
         # أمر SQL لإضافة منتج جديد في جدول products
         query = "INSERT INTO products (name, description, price, image_url, category_id) VALUES (%s, %s, %s, %s, %s) RETURNING id;"
         cur.execute(query, (name, description, price, image_url, category_id))
@@ -178,6 +192,17 @@ def update_product(id):
         price = data["price"]
         image_url = data["image_url"]
         category_id = data["category_id"]
+
+        # التحقق من أن category_id موجود في جدول categories
+        cur.execute("SELECT id FROM categories WHERE id = %s;", (category_id,))
+        category = cur.fetchone()
+        if not category:  # لو التصنيف مش موجود (يعني الـ query مرجعش صف)
+            cur.close()
+            conn.close()
+            return (
+                jsonify({"message": "Invalid category_id. Category does not exist."}),
+                400,
+            )  # رد خطأ "Bad Request"
 
         # أمر SQL لتعديل منتج موجود في جدول products بناءً على الـ ID
         query = "UPDATE products SET name = %s, description = %s, price = %s, image_url = %s, category_id = %s, updated_at = CURRENT_TIMESTAMP WHERE id = %s;"
